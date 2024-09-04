@@ -1,0 +1,208 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box
+}
+
+.container{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.login-form{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px 10px;
+    width: 400px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  
+    gap: 40px;  
+}
+.input-form{
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 20px;
+    width: 100%;
+}
+.btn-form{
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 1rem;
+}
+form div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+form div label{
+    
+}
+.messages{
+    background-color: rgba(36, 254, 25, 0.3);
+    border-radius: 20px;
+    border: 1px solid rgb(12, 247, 43);
+    color: rgb(42, 165, 56);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.messages-dashboard{
+    background-color: rgba(36, 254, 25, 0.3);
+    border-radius: 20px;
+    border: 1px solid rgb(12, 247, 43);
+    color: rgb(42, 165, 56);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 500px;   
+}
+
+.container-profile{
+    background-color: rgb(12, 12, 12);
+    min-height: 100vh;
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .body-profile{
+        flex-grow: 1;
+        max-width: 800px;
+        min-height: 100vh;        
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .cont-img-profile{
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    }
+}
+
+.container-dashboard{
+    min-height: 100vh;    
+    padding: 0 60px;
+    display: flex;
+    flex-direction: column;    
+    align-items: center;
+    .body-dashboard{
+        width: 800px;
+        padding: 30px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+.cont-notificacion{
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#detalle_notification{
+    padding: 5px;
+    border-radius: 10px;
+    width: 500px;    
+}
+.cont-user{
+    
+}
+.cont-session-close{
+    display: flex; 
+    justify-content: end;    
+}
+.cont-user-types{    
+    padding: 10px;
+    width: fit-content;
+    border: 1px solid #000;
+    border-radius: 10px;    
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .type-user{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            & input[type="text"]{
+                width: 500px;
+                padding: 10px;
+                border-radius: 10px;            
+            }
+            .invalid-feedback{
+                color:red;
+            }
+        }
+    }    
+}
+
+.cont-permission{
+    form{
+        .cont-fields{
+            & input[type="text"]{
+                width: 500px;
+                padding: 10px;
+                border-radius: 10px; 
+            }
+            select {
+                width: 500px;
+                padding: 10px;
+                border-radius: 10px; 
+            }
+            & > label {
+                display:block;
+                padding: 20px 10px;                
+                font-weight: lighter;
+                letter-spacing: 1px;
+                font-size: 1.5rem;
+            }
+        }
+        .cont-btn-form-permission{            
+            padding: 10px;
+            width: 500px;
+        }
+    }
+}
+
+.logout-user{    
+    display: flex;
+    justify-content: end;
+}
+
+.cont-notificacion-btn-count{
+    padding: 10px 0;
+    .btn-noti-count{
+        position: relative;
+        padding: 10px 30px;
+        .circle{
+            position:absolute;
+            top:-15px;
+            right: -15px;
+            background-color: red;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color:white;
+        }
+    }
+}

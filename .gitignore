@@ -1,0 +1,9 @@
+# Ignorar el entorno virtual completo
+Lib/
+Include/
+Scripts/
+pyvenv.cfg
+
+# Ignorar archivos Python compilados
+*.pyc
+__pycache__/

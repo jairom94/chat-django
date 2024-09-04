@@ -1,0 +1,27 @@
+{% extends "auth/base.html" %}
+
+{% block container %}
+
+{% load custom_filters %}
+
+<div class="container">
+    <form class="login-form" method="post" action="{% url 'account:Register' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label for="{{field.id_for_label}}" class="form-label">{{field.label}}</label>
+                {{ field|add_class:"input-form" }}
+                {% for error in field.errors %}
+                  <div  class="invalid-feedback">
+                      {{error}}
+                  </div>
+                {% endfor %}
+            </div>            
+        {% endfor %}        
+        <div>
+            <input class="btn-form" type="submit" value="Register">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

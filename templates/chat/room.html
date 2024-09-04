@@ -1,0 +1,85 @@
+{% extends "chat/base.html" %} 
+{% block container %}
+<h1 style="aling-text:center;background-color:lightblue;padding:10px 10px;border-radius:20px;">{{course}}</h1>
+<div style="padding:10px;">
+    <ul>
+        {% for student in course.students.all %}
+        <li>{{student}}</li>
+        {% endfor %}
+    </ul>
+</div>
+<h3>{{request.user.username}}</h3>
+<div class="chat-container">
+    <ul id="chat">
+
+    </ul>
+</div>
+<div id="chat-input">
+  <input id="chat-message-input" type="text" />
+  <input id="chat-message-submit" type="submit" value="Send" />
+</div>
+
+{% endblock %}
+
+{% block include_js %}
+{{ course.id|json_script:"course-id" }}
+{{ request.user.username|json_script:"username" }}
+{% endblock %}
+
+{% block domready %}
+
+const courseId = JSON.parse(
+document.getElementById('course-id').textContent
+);
+const username = JSON.parse(
+    document.getElementById('username').textContent
+    );
+const url = 'ws://' + window.location.host +
+'/ws/chat/room/' + courseId + '/';
+const chatSocket = new WebSocket(url);
+const chat_container = document.querySelector('.chat-container');
+chatSocket.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    const chat = document.querySelector('#chat');
+    const message_li = document.createElement('li')
+     message_li.classList.add('message')
+    if(username === data.username){
+        //chat.innerHTML += '<li class="message me-message">'+ data.message +'</li>'
+        message_li.textContent = data.message
+        chat.appendChild(message_li)
+        message_li.classList.add('me-message')
+    }else{
+        //chat.innerHTML += '<li class="message other-message">'+ data.message +'</li>'
+        message_li.textContent = data.message
+        chat.appendChild(message_li)
+        message_li.classList.add('other-message')
+    }
+    chat_container.scrollTop = chat_container.scrollHeight;
+}
+chatSocket.onclose = (e) => {
+    console.log('Chat socket closed unexpectedly');
+}
+
+const $txtMessage = document.querySelector('#chat-message-input')
+const $btnSend = document.querySelector('#chat-message-submit')
+
+$btnSend.addEventListener('click',()=>{
+    const message = $txtMessage.value
+    if(message){
+        chatSocket.send(
+            JSON.stringify({'message':message})
+        );
+        $txtMessage.value = '';
+        $txtMessage.focus();
+    }
+});
+
+$txtMessage.addEventListener('keypress',(e)=>{
+    if(e.key === 'Enter'){
+        e.preventDefault();
+        $btnSend.click();
+    }
+})
+
+
+{% endblock %}

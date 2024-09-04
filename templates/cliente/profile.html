@@ -1,0 +1,30 @@
+{% extends "cliente/base.html" %}
+{% block container %}
+{% if request.user.is_authenticated %}
+<div class="container-profile">
+    <div class="body-profile">
+        <div class="cont-img-profile">
+            <img src="" class="img-profile" alt="{{request.user.first_name}}" >
+        </div>
+        <div>            
+            <div class="logout-user">
+                <form action="{% url 'account:Logout' %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Cerrar Session">
+                </form>
+            </div>           
+            <h2>Username: {{ request.user.username }}</h3>  
+            <div>
+                <a href="{% url 'account:EditProfile' request.user.id %}">Editar perfil</a>
+            </div> 
+            <div class="cont-notificacion-btn-count">
+                <button class="btn-noti-count">
+                    <span>Notificación</span>
+                    <span class="circle"></span>
+                </button>
+            </div>                     
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

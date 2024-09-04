@@ -1,0 +1,121 @@
+{% extends "auth/base.html" %} {% block container %}
+{% load custom_filters %}
+<div class="container-dashboard" style="padding: 10px">
+  <div class="body-dashboard">    
+    <div>
+        <h1>DashBoard</h1>
+        <h5>Usuario Administrativo</h5>
+    </div>
+    <div class="cont-session-close">
+      <form action="{% url 'account:Logout' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Cerrar Session" />
+      </form>
+    </div>
+    <div class="cont-user">
+      <div>Username: {{request.user}}</div>      
+    </div>
+    {% if messages %}
+    <div class="messages-dashboard">
+        {% for message in messages %}
+          <span>{{ message }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="cont-user-types">
+        <form action="{% url "account:Dashboard" %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="form-type-user" value="add">
+          {% for field in typeUserForm  %}
+          <div class="type-user">
+            <label for="{{field.id_for_label}}" class="">{{field.label}}</label>            
+            {{ field|add_class:"" }}
+            {% for error in field.errors %}
+                <div  class="invalid-feedback">
+                    {{error}}
+                </div>
+            {% endfor %}
+          </div>
+          {% endfor %}        
+          <div class="cont-btn-user-type">
+              <input type="submit" value="Guardar">
+          </div>
+      </form>
+    </div>
+    <div class="cont-permission">
+        <form action="{% url "account:Dashboard" %}" method="post">          
+          {% csrf_token %}
+          <input type="hidden" name="form-permission" value="add">
+          {% for field in permissionForm %}
+          <div class="cont-fields">
+            <label for="{{field.id_for_label}}" class="">{{field.label}}</label>            
+            {{ field|add_class:"" }}
+            {% for error in field.errors %}
+                <div  class="invalid-feedback">
+                    {{error}}
+                </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+          <div class="cont-btn-form-permission">
+            <input type="submit" value="Guardar">
+          </div>
+        </form>
+    </div>
+    <div class="cont-notificacion">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <label>Detalle de la notificación:</label>
+        <textarea rows="3" id="detalle_notification"></textarea>
+      </div>
+      <div>
+        <label>Tipo de notificación</label>
+        <select id="type_notification">
+          <option value="1">Anuncio</option>
+          <option value="2">Comunicado</option>
+        </select>
+      </div>
+      <div>
+        <input id="send_notification" type="submit" value="Enviar notificación" />
+      </div>
+    </div>
+    <br />    
+    <div>
+      Lista de Notificaciones:
+      <ul id="list_notifications"></ul>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block domready %}
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    // DOM loaded
+    const userID = 1;
+    const url =
+      "ws://" + window.location.host + "/ws/notifications/" + userID + "/";
+    const $detalle_notification = document.querySelector(
+      "#detalle_notification"
+    );
+    const $type_notification = document.querySelector("#type_notification");
+    const $send_notification = document.querySelector("#send_notification");
+    const notiSocket = new WebSocket(url);
+    notiSocket.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      const $list_notifications = document.querySelector("#list_notifications");
+      const $new_notification = document.createElement("li");
+      $new_notification.textContent = `Detalle: ${data.notification?.detalle} - Tipo: ${data.notification?.type}`;
+      $list_notifications.appendChild($new_notification);
+    };
+    $send_notification.addEventListener("click", (e) => {
+      notiSocket.send(
+        JSON.stringify({
+          notification: {
+            detalle: $detalle_notification.value,
+            type: $type_notification.value,
+          },
+        })
+      );
+      $detalle_notification.value = "";
+    });
+  });
+</script>
+{% endblock %}
